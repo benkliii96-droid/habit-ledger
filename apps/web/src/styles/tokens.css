@@ -1,0 +1,28 @@
+:root {
+  --bg: #12100e;
+  --bg-elevated: #1a1714;
+  --bg-soft: #221e1a;
+  --ink: #f3eee6;
+  --ink-muted: #a79f94;
+  --ink-faint: #6f675e;
+  --line: rgba(243, 238, 230, 0.1);
+  --accent: #c8f54b;
+  --accent-ink: #141210;
+  --danger: #ff7a6e;
+  --info: #7dd3fc;
+  --pink: #f9a8d4;
+  --radius: 18px;
+  --radius-sm: 12px;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  --font-display: "Fraunces", Georgia, serif;
+  --font-ui: "Manrope", system-ui, sans-serif;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --max: 1120px;
+}

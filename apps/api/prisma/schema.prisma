@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OAuthProvider {
+  google
+  yandex
+}
+
+enum HabitFrequency {
+  daily
+  weekly
+}
+
+enum CheckInStatus {
+  done
+  skipped
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  name         String?
+  passwordHash String?
+  avatarUrl    String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  accounts     OAuthAccount[]
+  sessions     Session[]
+  habits       Habit[]
+}
+
+model OAuthAccount {
+  id             String        @id @default(cuid())
+  provider       OAuthProvider
+  providerUserId String
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime      @default(now())
+
+  @@unique([provider, providerUserId])
+  @@index([userId])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Habit {
+  id             String         @id @default(cuid())
+  userId         String
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title          String
+  description    String?
+  color          String         @default("#C8F54B")
+  icon           String         @default("flame")
+  frequency      HabitFrequency @default(daily)
+  timesPerWeek   Int            @default(7)
+  debt           Int            @default(0)
+  archivedAt     DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  checkIns       CheckIn[]
+
+  @@index([userId])
+}
+
+model CheckIn {
+  id        String        @id @default(cuid())
+  habitId   String
+  habit     Habit         @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  date      DateTime      @db.Date
+  status    CheckInStatus
+  note      String?
+  createdAt DateTime      @default(now())
+
+  @@unique([habitId, date])
+  @@index([habitId, date])
+}

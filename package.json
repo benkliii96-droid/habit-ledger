@@ -1,0 +1,20 @@
+{
+  "name": "habit-ledger",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @habit-ledger/api & npm run dev -w @habit-ledger/web",
+    "dev:api": "npm run dev -w @habit-ledger/api",
+    "dev:web": "npm run dev -w @habit-ledger/web",
+    "build": "npm run build -w @habit-ledger/api && npm run build -w @habit-ledger/web",
+    "db:generate": "npm run db:generate -w @habit-ledger/api",
+    "db:migrate": "npm run db:migrate -w @habit-ledger/api",
+    "db:seed": "npm run db:seed -w @habit-ledger/api",
+    "db:setup": "npm run db:migrate && npm run db:seed"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

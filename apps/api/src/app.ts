@@ -17,8 +17,22 @@ export async function buildApp(env: Env) {
   await app.register(cookie, {
     secret: env.SESSION_SECRET,
   });
+  const allowedOrigins = new Set(
+    [
+      env.WEB_ORIGIN,
+      "http://127.0.0.1:5173",
+      "http://localhost:5173",
+    ].filter(Boolean),
+  );
+
   await app.register(cors, {
-    origin: env.WEB_ORIGIN,
+    origin(origin, cb) {
+      if (!origin || allowedOrigins.has(origin)) {
+        cb(null, true);
+        return;
+      }
+      cb(new Error("Not allowed by CORS"), false);
+    },
     credentials: true,
   });
 
